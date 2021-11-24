@@ -4,13 +4,9 @@ import operation.Operation;
 
 public class MultiplicationEvaluator extends AbstractOperationEvaluator {
 
-    public MultiplicationEvaluator() {
-        super(Operation.MULTIPLY);
-    }
-
     @Override
-    public Integer evaluate(String operation, Integer operand1, Integer operand2) {
-        return operand1 * operand2;
+    public Integer evaluate(Operation operation, Integer[] operands) {
+        return operands[0] * operands[1];
     }
 
 }

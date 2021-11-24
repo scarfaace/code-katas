@@ -1,15 +1,17 @@
 import lombok.Builder;
 import operation.Operation;
 import operation.evaluator.AbstractOperationEvaluator;
-import operation.exceptions.UnrecognizedOperatorException;
+import operation.exceptions.UnrecognizedOperationException;
+import operation.extractor.AbstractOperandsExtractor;
 
-import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 @Builder
 public class RpnEvaluator {
 
-    private final List<AbstractOperationEvaluator> operationEvaluators;
+    private final Map<Operation, AbstractOperationEvaluator> operationEvaluators;
+    private final Map<Operation, AbstractOperandsExtractor> operandsExtractors;
 
     public int evaluate(String[] tokens) {
         Stack<Integer> numbersStack = new Stack<>();
@@ -18,12 +20,8 @@ public class RpnEvaluator {
                 numbersStack.push(castTokenToInteger(token));
             }
             if(isOperator(token)) {
-                if(numbersStack.size() == 0 || numbersStack.size() == 1) {
-                    throw new RuntimeException("Two operands needed for a binary operation.");
-                }
-                Integer operand2 = numbersStack.pop();
-                Integer operand1 = numbersStack.pop();
-                numbersStack.push(performOperation(token, operand1, operand2));
+                Integer result = performOperation(token, numbersStack);
+                numbersStack.push(result);
             }
         }
         return numbersStack.pop();
@@ -34,11 +32,9 @@ public class RpnEvaluator {
         return Integer.parseInt(token);
     }
 
-
     private boolean isNumber(String token) {
         return !isOperator(token);
     }
-
 
     private static boolean isOperator(String token) {
         for(Operation operation: Operation.values()) {
@@ -49,18 +45,24 @@ public class RpnEvaluator {
         return false;
     }
 
-    private Integer performOperation(String operation, Integer operand1, Integer operand2) {
-        AbstractOperationEvaluator operationEvaluator = chooseOperationEvaluator(operation);
-        return operationEvaluator.evaluate(operation, operand1, operand2);
+    private Integer performOperation(String operationString, Stack<Integer> numbersStack) {
+        try {
+            Operation operation = Operation.getOperationByString(operationString);
+            Integer[] operands = extractOperands(operation, numbersStack);
+            return evaluateOperation(operation, operands);
+        } catch (IllegalArgumentException exception) {
+            throw new UnrecognizedOperationException(operationString);
+        }
     }
 
-    private AbstractOperationEvaluator chooseOperationEvaluator(String operation) {
-        for (AbstractOperationEvaluator evaluator : operationEvaluators) {
-            if (evaluator.shouldEvaluate(operation)) {
-                return evaluator;
-            }
-        }
-        throw new UnrecognizedOperatorException("Unrecognized operator.");
+    private Integer[] extractOperands(Operation operation, Stack<Integer> numbersStack) {
+        AbstractOperandsExtractor operandsExtractor = operandsExtractors.get(operation);
+        return operandsExtractor.extractOperands(operation, numbersStack);
+    }
+
+    private Integer evaluateOperation(Operation operation, Integer[] operands) {
+        AbstractOperationEvaluator operationEvaluator = operationEvaluators.get(operation);
+        return operationEvaluator.evaluate(operation, operands);
     }
 
 }

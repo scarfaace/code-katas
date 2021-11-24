@@ -2,11 +2,11 @@ package operation.evaluator;
 
 import operation.Operation;
 
-public class AdditionEvaluator extends AbstractOperationEvaluator {
+public class SqrtEvaluator extends AbstractOperationEvaluator {
 
     @Override
     public Integer evaluate(Operation operation, Integer[] operands) {
-        return operands[0] + operands[1];
+        return (int)Math.sqrt(operands[0]);
     }
 
 }
