@@ -1,6 +1,7 @@
 import operation.Operation;
 import operation.evaluator.*;
 import operation.extractor.AbstractOperandsExtractor;
+import operation.extractor.AllOperandsExtractor;
 import operation.extractor.BinaryOperationOperandsExtractor;
 import operation.extractor.UnaryOperationOperandsExtractor;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,17 +23,20 @@ public class RpnEvaluatorTest {
                 Operation.SUBTRACT, new SubtractionEvaluator(),
                 Operation.MULTIPLY, new MultiplicationEvaluator(),
                 Operation.DIVIDE, new DivisionEvaluator(),
-                Operation.SQRT, new SqrtEvaluator()
+                Operation.SQRT, new SqrtEvaluator(),
+                Operation.MAX, new MaxEvaluator()
         );
 
         BinaryOperationOperandsExtractor binaryOperationOperandsExtractor = new BinaryOperationOperandsExtractor();
         UnaryOperationOperandsExtractor unaryOperationOperandsExtractor = new UnaryOperationOperandsExtractor();
+        AllOperandsExtractor allOperandsExtractor = new AllOperandsExtractor();
         Map<Operation, AbstractOperandsExtractor> operandsExtractors = Map.of(
                 Operation.ADD, binaryOperationOperandsExtractor,
                 Operation.SUBTRACT, binaryOperationOperandsExtractor,
                 Operation.MULTIPLY, binaryOperationOperandsExtractor,
                 Operation.DIVIDE, binaryOperationOperandsExtractor,
-                Operation.SQRT, unaryOperationOperandsExtractor
+                Operation.SQRT, unaryOperationOperandsExtractor,
+                Operation.MAX, allOperandsExtractor
         );
 
         rpnEvaluator = RpnEvaluator.builder()
@@ -78,6 +82,26 @@ public class RpnEvaluatorTest {
         int returnValue = rpnEvaluator.evaluate(tokens);
 
         Integer expectedValue = 5;
+        assertEquals(expectedValue, returnValue);
+    }
+
+    @Test
+    public void should_return_9() {
+        String[] tokens = { "5", "3", "4", "2", "9", "1", "MAX" };
+
+        int returnValue = rpnEvaluator.evaluate(tokens);
+
+        Integer expectedValue = 9;
+        assertEquals(expectedValue, returnValue);
+    }
+
+    @Test
+    public void should_return_10() {
+        String[] tokens = { "4", "5", "MAX", "1", "2", "MAX", "2", "*" };
+
+        int returnValue = rpnEvaluator.evaluate(tokens);
+
+        Integer expectedValue = 10;
         assertEquals(expectedValue, returnValue);
     }
 

@@ -13,7 +13,8 @@ public enum Operation {
     SUBTRACT("-"),
     MULTIPLY("*"),
     DIVIDE("/"),
-    SQRT("SQRT");
+    SQRT("SQRT"),
+    MAX("MAX");
 
     private final String stringOperation;
 
