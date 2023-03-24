@@ -54,12 +54,22 @@ public class MinesField {
         int cellXPosition = cell.getCellPosition().getX();
 
         List<CellPosition> neighbouringCellPositions = new ArrayList<>();
-        for(int y=cellYPosition-1; y < cellYPosition + 1; y++) {
-            for(int x=cellXPosition-1; x < cellXPosition + 1; x++) {
+        for (int y=cellYPosition-1; y <= cellYPosition + 1; y++) {
+            for (int x=cellXPosition-1; x <= cellXPosition + 1; x++) {
+                CellPosition newCellPosition = new CellPosition(x, y);
+                if (cell.getCellPosition().equals(newCellPosition)) {
+                    continue;
+                }
                 neighbouringCellPositions.add(new CellPosition(x, y));
             }
         }
-        return neighbouringCellPositions;
+        return filterOutNegativeCellPositions(neighbouringCellPositions);
+    }
+
+    private List<CellPosition> filterOutNegativeCellPositions(List<CellPosition> cellPositions) {
+        return cellPositions.stream()
+                .filter(cellPosition -> cellPosition.getX() >= 0 && cellPosition.getY() >= 0)
+                .collect(Collectors.toList());
     }
 
 }

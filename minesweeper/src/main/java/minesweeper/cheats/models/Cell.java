@@ -1,5 +1,6 @@
 package minesweeper.cheats.models;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import minesweeper.cheats.MinesField;
 import minesweeper.cheats.exceptions.InvalidCellCharacterException;
@@ -7,6 +8,7 @@ import minesweeper.cheats.exceptions.InvalidCellCharacterException;
 import java.util.List;
 
 @Getter
+@EqualsAndHashCode
 public abstract class Cell {
 
     protected CellPosition cellPosition;
@@ -49,5 +51,4 @@ public abstract class Cell {
                 .filter(Cell::isMine)
                 .count();
     }
-
 }

@@ -46,7 +46,7 @@ public class MinesFieldCreator {
     private FieldDimensions getFieldDimensions(String txtFilePath) {
         int height = 0;
         int width = 0;
-        Set<Integer> widths = new HashSet<Integer>();
+        Set<Integer> widths = new HashSet<>();
 
         try {
             File myObj = new File(txtFilePath);
