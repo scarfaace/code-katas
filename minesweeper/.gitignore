@@ -1,0 +1,6 @@
+.gradle/
+.idea/
+target/
+
+minesweeper-cheats.iml
+minesweeper.iml
