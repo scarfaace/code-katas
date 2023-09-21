@@ -3,11 +3,13 @@ package minesweeper.cheats.models;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.util.Objects;
 
 @Getter
 @Builder
+@ToString
 @AllArgsConstructor
 public class CellPosition {
     protected int x;

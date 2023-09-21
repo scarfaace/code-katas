@@ -10,7 +10,6 @@ import java.util.List;
 @Getter
 @EqualsAndHashCode
 public abstract class Cell {
-
     protected CellPosition cellPosition;
     protected MinesField minesField;
 

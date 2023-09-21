@@ -28,6 +28,10 @@ public class MinesField {
         this.fieldWidth = minesField[0].length;
     }
 
+    public Cell getCell(int x, int y) {
+        return minesField[x][y];
+    }
+
     /**
      * Returns the neighbourhood of the cell.
      * @param cell
@@ -72,4 +76,11 @@ public class MinesField {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public String toString() {
+        return "MinesField{" +
+                "fieldHeight=" + fieldHeight +
+                ", fieldWidth=" + fieldWidth +
+                '}';
+    }
 }
