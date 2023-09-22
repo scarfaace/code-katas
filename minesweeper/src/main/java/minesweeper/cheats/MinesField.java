@@ -29,7 +29,7 @@ public class MinesField {
     }
 
     public Cell getCell(int x, int y) {
-        return minesField[x][y];
+        return minesField[y][x];
     }
 
     /**
@@ -67,12 +67,17 @@ public class MinesField {
                 neighbouringCellPositions.add(new CellPosition(x, y));
             }
         }
-        return filterOutNegativeCellPositions(neighbouringCellPositions);
+        return filterOutInvalidCellPositions(neighbouringCellPositions);
     }
 
-    private List<CellPosition> filterOutNegativeCellPositions(List<CellPosition> cellPositions) {
+    /**
+     * Invalid positions are meant to be:
+     * @param cellPositions
+     * @return
+     */
+    private List<CellPosition> filterOutInvalidCellPositions(List<CellPosition> cellPositions) {
         return cellPositions.stream()
-                .filter(cellPosition -> cellPosition.getX() >= 0 && cellPosition.getY() >= 0)
+                .filter(cellPosition -> cellPosition.isValidPositionInMineField(this))
                 .collect(Collectors.toList());
     }
 

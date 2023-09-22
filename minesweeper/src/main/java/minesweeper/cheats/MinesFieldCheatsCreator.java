@@ -16,9 +16,9 @@ public class MinesFieldCheatsCreator {
         Cell[][] minesFieldArray = minesField.getMinesField();
         List<List<Integer>> minesCheatsArray = new ArrayList<>(minesField.getFieldHeight());
 
-        for(int y = 0; y <= minesField.getFieldHeight(); y++) {
+        for(int y = 0; y <= minesField.getFieldHeight()-1; y++) {
             List<Integer> hintsRow = new ArrayList<>(minesField.getFieldWidth());
-            for(int x = 0; x <= minesField.getFieldWidth(); x++) {
+            for(int x = 0; x <= minesField.getFieldWidth()-1; x++) {
                 Cell currentCell = minesFieldArray[y][x];
                 hintsRow.add(currentCell.getMinesCountAround());
             }

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
+import minesweeper.cheats.MinesField;
 
 import java.util.Objects;
 
@@ -14,6 +15,16 @@ import java.util.Objects;
 public class CellPosition {
     protected int x;
     protected int y;
+
+    /**
+     * Valid position is not out of the minefield dimensions.
+     * @param minesField
+     * @return
+     */
+    public boolean isValidPositionInMineField(MinesField minesField) {
+        return x >= 0 && y >= 0 ||
+                x < minesField.getFieldWidth() && y < minesField.getFieldHeight();
+    }
 
     @Override
     public boolean equals(Object o) {
