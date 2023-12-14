@@ -3,6 +3,7 @@ package john.crickett.wc;
 import john.crickett.wc.options.CharacterCounter;
 import john.crickett.wc.options.DataCounter;
 import john.crickett.wc.options.LineCounter;
+import john.crickett.wc.options.WordCounter;
 
 import java.util.List;
 
@@ -25,6 +26,8 @@ public class Wc {
       dataCounter = new CharacterCounter();
     } else if (option.equals("-l")) {
       dataCounter = new LineCounter();
+    } else if (option.equals("-w")) {
+      dataCounter = new WordCounter();
     }
   }
 
