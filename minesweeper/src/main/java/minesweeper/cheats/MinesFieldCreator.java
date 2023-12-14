@@ -2,6 +2,7 @@ package minesweeper.cheats;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 import minesweeper.cheats.models.Cell;
 
 import java.io.File;
@@ -11,6 +12,7 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.IntStream;
 
+//@Slf4j
 public class MinesFieldCreator {
 
     public MinesField fromTxt(String txtFilePath) {
@@ -35,6 +37,7 @@ public class MinesFieldCreator {
         } catch (FileNotFoundException e) {
             System.out.println("Failed reading field file.");
             e.printStackTrace();
+//            log.error("Failed reading mine field file.", e);
         }
 
         minesField.setFieldHeight(fieldDimensions.getHeight());
