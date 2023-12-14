@@ -1,13 +1,21 @@
 package john.crickett.wc.options;
 
-import org.apache.commons.io.FileUtils;
+import lombok.SneakyThrows;
 
-import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Stream;
 
 
 public class CharacterCounter implements DataCounter {
+  // TODO fix me!!! -> does not correctly work with \cr or \lf EOF. Only with \cr\lf
+  @SneakyThrows
   @Override
   public long count(String filePath) {
-    return FileUtils.sizeOf(new File(filePath));
+    try (Stream<String> linesStream = Files.lines(Path.of(filePath))) {
+      return linesStream
+        .map(line -> line.length() + 2)   // +2 adds \cr\lf characters...; if only \cr or \lf indicates EOF, this computation is incorrect
+        .reduce(Integer::sum).orElse(0);
+    }
   }
 }

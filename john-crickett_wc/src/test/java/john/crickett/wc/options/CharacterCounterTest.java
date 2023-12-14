@@ -14,7 +14,7 @@ public class CharacterCounterTest {
   }
 
   @Test
-  void count_characters_in_short_file() {
+  void count_lines_in_short_file() {
     String filePath = "src/test/resources/simple-test.txt";
 
     long characterCount = characterCounter.count(filePath);
@@ -23,11 +23,20 @@ public class CharacterCounterTest {
   }
 
   @Test
-  void count_characters_in_long_file() {
+  void count_lines_in_short_crlf_file() {
+    String filePath = "src/test/resources/simple-test-crlf.txt";
+
+    long characterCount = characterCounter.count(filePath);
+
+    assertThat(characterCount).isEqualTo(506);
+  }
+
+  @Test
+  void count_lines_in_long_file() {
     String filePath = "src/test/resources/test.txt";
 
     long characterCount = characterCounter.count(filePath);
 
-    assertThat(characterCount).isEqualTo(342190);
+    assertThat(characterCount).isEqualTo(339292);
   }
 }

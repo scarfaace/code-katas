@@ -1,6 +1,6 @@
 package john.crickett.wc;
 
-import john.crickett.wc.options.CharacterCounter;
+import john.crickett.wc.options.ByteCounter;
 import john.crickett.wc.options.DataCounter;
 import john.crickett.wc.options.LineCounter;
 import john.crickett.wc.options.WordCounter;
@@ -23,7 +23,7 @@ public class Wc {
 
   private void setDataCounter(String option) {
     if (option.equals("-c")) {
-      dataCounter = new CharacterCounter();
+      dataCounter = new ByteCounter();
     } else if (option.equals("-l")) {
       dataCounter = new LineCounter();
     } else if (option.equals("-w")) {
