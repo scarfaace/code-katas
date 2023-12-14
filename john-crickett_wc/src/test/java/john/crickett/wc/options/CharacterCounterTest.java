@@ -14,7 +14,7 @@ public class CharacterCounterTest {
   }
 
   @Test
-  void counts_characters_in_short_file() {
+  void count_characters_in_short_file() {
     String filePath = "src/test/resources/simple-test.txt";
 
     long characterCount = characterCounter.count(filePath);
@@ -23,7 +23,7 @@ public class CharacterCounterTest {
   }
 
   @Test
-  void counts_characters_in_long_file() {
+  void count_characters_in_long_file() {
     String filePath = "src/test/resources/test.txt";
 
     long characterCount = characterCounter.count(filePath);
