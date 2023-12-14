@@ -1,35 +1,25 @@
 package john.crickett.wc;
 
-import john.crickett.wc.options.ByteCounter;
-import john.crickett.wc.options.DataCounter;
-import john.crickett.wc.options.LineCounter;
-import john.crickett.wc.options.WordCounter;
+import john.crickett.wc.options.datacounter.DataCounterController;
 
 import java.util.List;
 
 public class Wc {
-  private DataCounter dataCounter;
+  private DataCounterController dataCounterController;
 
   public void execute(List<String> input) {
-    String option = input.get(1);
+    dataCounterController = new DataCounterController();
     String filePath = input.get(input.size()-1);
 
-    setDataCounter(option);
-    long dataCount = dataCounter.count(filePath);
-
-    String output = dataCount + " " + filePath;
-    System.out.println(output);
-  }
-
-  private void setDataCounter(String option) {
-    if (option.equals("-c")) {
-      dataCounter = new ByteCounter();
-    } else if (option.equals("-l")) {
-      dataCounter = new LineCounter();
-    } else if (option.equals("-w")) {
-      dataCounter = new WordCounter();
+    if (input.size() == 2) {
+      dataCounterController.initializeDataCounters(null);
+    } else if (input.size() == 3) {
+      String dataCountOption = input.get(1);
+      dataCounterController.initializeDataCounters(dataCountOption);
+    } else {
+      throw new IllegalArgumentException("Wrong command execution format.");
     }
+
+    dataCounterController.executeDataCounters(filePath);
   }
-
-
 }

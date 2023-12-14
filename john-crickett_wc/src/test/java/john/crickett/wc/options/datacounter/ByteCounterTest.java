@@ -1,5 +1,6 @@
-package john.crickett.wc.options;
+package john.crickett.wc.options.datacounter;
 
+import john.crickett.wc.options.datacounter.units.ByteCounter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
