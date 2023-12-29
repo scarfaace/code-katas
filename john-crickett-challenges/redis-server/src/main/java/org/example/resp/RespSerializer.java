@@ -1,5 +1,6 @@
 package org.example.resp;
 
+import org.example.exceptions.RespSyntaxException;
 import org.example.resp.serializers.RespDataTypeSerializer;
 import org.example.resp.serializers.RespSimpleStringSerializer;
 
@@ -23,6 +24,8 @@ public class RespSerializer {
    * @return
    */
   public String deserialize(byte[] inputBytes) {
+    validateBasicSyntax(inputBytes);
+
     String inputString = new String(inputBytes, StandardCharsets.US_ASCII);
     for (RespDataTypeSerializer dataTypeSerializer : dataTypeSerializers) {
       if (dataTypeSerializer.shouldDeserialize(inputString)) {
@@ -41,6 +44,23 @@ public class RespSerializer {
    */
   public byte[] serialize(String outputString) {
     throw new RuntimeException("Not implemented");
+  }
+
+  /**
+   * Validates the basic syntax rules:
+   * <ul>
+   *   <li>contains the leading character deciding the data type</li>
+   *   <li>trailing <code>\r\n</code></li>
+   * </ul>
+   * @param inputBytes
+   */
+  private void validateBasicSyntax(byte[] inputBytes) {
+    if (inputBytes.length < 3) {
+      throw new RespSyntaxException("Too few characters");
+    }
+    if (inputBytes[inputBytes.length-2] != '\r' || inputBytes[inputBytes.length-1] != '\n') {
+      throw new RespSyntaxException("RESP string not terminated with \"\\r\\n\"");
+    }
   }
 
 }
