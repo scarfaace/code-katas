@@ -1,6 +1,7 @@
 package org.example.resp;
 
 import org.example.exceptions.RespSyntaxException;
+import org.example.resp.serializers.RespBulkStringSerializer;
 import org.example.resp.serializers.RespDataTypeSerializer;
 import org.example.resp.serializers.RespSimpleStringSerializer;
 
@@ -13,7 +14,8 @@ public class RespSerializer {
 
   public RespSerializer() {
     dataTypeSerializers = List.of(
-      new RespSimpleStringSerializer()
+      new RespSimpleStringSerializer(),
+      new RespBulkStringSerializer()
     );
   }
 

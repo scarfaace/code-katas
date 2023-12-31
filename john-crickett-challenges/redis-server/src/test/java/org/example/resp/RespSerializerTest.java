@@ -2,6 +2,7 @@ package org.example.resp;
 
 import org.example.exceptions.RespSyntaxException;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
 import java.nio.charset.StandardCharsets;
@@ -16,16 +17,6 @@ public class RespSerializerTest {
   @BeforeEach
   void beforeEach() {
     respSerializer = new RespSerializer();
-  }
-
-  @Test
-  void shouldDeserializeNull() {
-    String input = "$-1\r\n";
-    byte[] inputBytes = input.getBytes(StandardCharsets.US_ASCII);
-
-    String deserializedString = respSerializer.deserialize(inputBytes);
-
-    assertThat(deserializedString).isNull();
   }
 
   @Test
@@ -48,32 +39,67 @@ public class RespSerializerTest {
     assertThat(deserializedString).isEqualTo("echo hello world");
   }
 
-  @Test
-  void shouldDeserializeSimpleString() {
-    String input = "+OK\r\n";
-    byte[] inputBytes = input.getBytes(StandardCharsets.US_ASCII);
+  @Nested
+  class SimpleStringTest {
+    @Test
+    void shouldDeserializeSimpleString() {
+      String input = "+OK\r\n";
+      byte[] inputBytes = input.getBytes(StandardCharsets.US_ASCII);
 
-    String deserializedString = respSerializer.deserialize(inputBytes);
+      String deserializedString = respSerializer.deserialize(inputBytes);
 
-    assertThat(deserializedString).isEqualTo("OK");
+      assertThat(deserializedString).isEqualTo("OK");
+    }
+
+    @Test
+    void shouldThrowWhenSimpleStringContainsMultipleCRChars() {
+      String input = "+O\rK\r\n";
+      byte[] inputBytes = input.getBytes(StandardCharsets.US_ASCII);
+
+      assertThatThrownBy(() -> respSerializer.deserialize(inputBytes))
+        .isInstanceOf(RespSyntaxException.class);
+    }
+
+    @Test
+    void shouldThrowWhenSimpleStringContainsMultipleLFChars() {
+      String input = "+O\nK\r\n";
+      byte[] inputBytes = input.getBytes(StandardCharsets.US_ASCII);
+
+      assertThatThrownBy(() -> respSerializer.deserialize(inputBytes))
+        .isInstanceOf(RespSyntaxException.class);
+    }
   }
 
-  @Test
-  void shouldThrowWhenSimpleStringContainsMultipleCRChars() {
-    String input = "+O\rK\r\n";
-    byte[] inputBytes = input.getBytes(StandardCharsets.US_ASCII);
+  @Nested
+  class BulkStringTest {
+    @Test
+    void shouldDeserializeNull() {
+      String input = "$-1\r\n";
+      byte[] inputBytes = input.getBytes(StandardCharsets.US_ASCII);
 
-    assertThatThrownBy(() -> respSerializer.deserialize(inputBytes))
-      .isInstanceOf(RespSyntaxException.class);
-  }
+      String deserializedString = respSerializer.deserialize(inputBytes);
 
-  @Test
-  void shouldThrowWhenSimpleStringContainsMultipleLFChars() {
-    String input = "+O\nK\r\n";
-    byte[] inputBytes = input.getBytes(StandardCharsets.US_ASCII);
+      assertThat(deserializedString).isNull();
+    }
 
-    assertThatThrownBy(() -> respSerializer.deserialize(inputBytes))
-      .isInstanceOf(RespSyntaxException.class);
+    @Test
+    void shouldThrowWhenPayloadStringSizeMismatchesActualPayloadStringSize() {
+      String input = "$5\r\na\r\n";
+      byte[] inputBytes = input.getBytes(StandardCharsets.US_ASCII);
+
+      assertThatThrownBy(() -> respSerializer.deserialize(inputBytes))
+        .isInstanceOf(RespSyntaxException.class);
+    }
+
+    @Test
+    void shouldReturnPayloadString() {
+      String input = "$8\r\ntest\0\r\na\r\n";
+      byte[] inputBytes = input.getBytes(StandardCharsets.US_ASCII);
+
+      String deserializedString = respSerializer.deserialize(inputBytes);
+
+      assertThat(deserializedString).isEqualTo("test\0\r\na");
+    }
   }
 
   @Test
