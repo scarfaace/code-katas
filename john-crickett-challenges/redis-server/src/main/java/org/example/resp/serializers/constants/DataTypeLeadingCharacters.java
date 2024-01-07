@@ -1,6 +1,6 @@
-package org.example.resp.serializers;
+package org.example.resp.serializers.constants;
 
-public class LeadingDataTypeCharacters {
+public class DataTypeLeadingCharacters {
 
   public static final char SIMPLE_STRING = '+';
   public static final char ERROR = '-';

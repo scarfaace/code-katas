@@ -2,9 +2,11 @@ package org.example.resp.serializers;
 
 public abstract class AbstractRespSerializer implements RespDataTypeSerializer {
 
-  private final char leadingDataTypeCharacter;
+  protected final String dataTypeName;
+  protected final char leadingDataTypeCharacter;
 
-  protected AbstractRespSerializer(char leadingDataTypeCharacter) {
+  protected AbstractRespSerializer(String dataTypeName, char leadingDataTypeCharacter) {
+    this.dataTypeName = dataTypeName;
     this.leadingDataTypeCharacter = leadingDataTypeCharacter;
   }
 

@@ -6,4 +6,8 @@ public class RespSyntaxException extends RuntimeException {
     super(message);
   }
 
+  public RespSyntaxException(String message, Throwable cause) {
+    super(message, cause);
+  }
+
 }
