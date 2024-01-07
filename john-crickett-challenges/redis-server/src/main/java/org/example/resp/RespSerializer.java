@@ -1,13 +1,18 @@
 package org.example.resp;
 
+import lombok.extern.slf4j.Slf4j;
 import org.example.exceptions.RespSyntaxException;
+import org.example.resp.datatypes.RespDataType;
 import org.example.resp.serializers.RespBulkStringSerializer;
 import org.example.resp.serializers.RespDataTypeSerializer;
+import org.example.resp.serializers.RespErrorSerializer;
+import org.example.resp.serializers.RespIntegerSerializer;
 import org.example.resp.serializers.RespSimpleStringSerializer;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 
+@Slf4j
 public class RespSerializer {
 
   private final List<RespDataTypeSerializer> dataTypeSerializers;
@@ -15,7 +20,9 @@ public class RespSerializer {
   public RespSerializer() {
     dataTypeSerializers = List.of(
       new RespSimpleStringSerializer(),
-      new RespBulkStringSerializer()
+      new RespBulkStringSerializer(),
+      new RespErrorSerializer(),
+      new RespIntegerSerializer()
     );
   }
 
@@ -25,7 +32,8 @@ public class RespSerializer {
    * @param inputBytes
    * @return
    */
-  public String deserialize(byte[] inputBytes) {
+  public RespDataType deserialize(byte[] inputBytes) {
+    log.debug("Input bytes: {}", inputBytes);
     validateBasicSyntax(inputBytes);
 
     String inputString = new String(inputBytes, StandardCharsets.US_ASCII);

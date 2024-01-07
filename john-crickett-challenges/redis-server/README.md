@@ -6,3 +6,12 @@
 ## Status
 
 🔄 In Progress - implementing Step 1
+
+To Do:
+
+- [x] Simple String deserialization
+- [ ] Simple String serialization
+- [x] Bulk String deserialization
+- [ ] Bulk String serialization
+- [x] Integer deserialization
+- [ ] Integer serialization

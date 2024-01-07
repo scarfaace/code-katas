@@ -2,22 +2,22 @@ package org.example.resp.serializers;
 
 import org.example.exceptions.RespSyntaxException;
 import org.example.resp.datatypes.RespDataType;
-import org.example.resp.serializers.constants.DataTypeNames;
 import org.example.resp.serializers.constants.DataTypeLeadingCharacters;
+import org.example.resp.serializers.constants.DataTypeNames;
 
-public class RespSimpleStringSerializer extends AbstractRespSerializer {
+public class RespErrorSerializer extends AbstractRespSerializer {
 
-  public RespSimpleStringSerializer() {
-    super(DataTypeNames.SIMPLE_STRING, DataTypeLeadingCharacters.SIMPLE_STRING);
+  public RespErrorSerializer() {
+    super(DataTypeNames.ERROR, DataTypeLeadingCharacters.ERROR);
   }
 
   @Override
   public RespDataType deserialize(String inputString) {
     validate(inputString);
 
-    String parsedBodyString = inputString.substring(1, inputString.length() - 2);
+    String parsedErrorBodyString = inputString.substring(1, inputString.length() - 2);
     return RespDataType.builder()
-      .value(parsedBodyString)
+      .value(parsedErrorBodyString)
       .dataType(dataTypeName)
       .build();
   }

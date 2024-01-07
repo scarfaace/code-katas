@@ -1,23 +1,30 @@
 package org.example.resp.serializers;
 
 import org.example.exceptions.RespSyntaxException;
-
-import static org.example.resp.serializers.LeadingDataTypeCharacters.BULK_STRING;
+import org.example.resp.datatypes.RespDataType;
+import org.example.resp.serializers.constants.DataTypeLeadingCharacters;
+import org.example.resp.serializers.constants.DataTypeNames;
 
 public class RespBulkStringSerializer extends AbstractRespSerializer {
 
   public RespBulkStringSerializer() {
-    super(BULK_STRING);
+    super(DataTypeNames.BULK_STRING, DataTypeLeadingCharacters.BULK_STRING);
   }
 
   @Override
-  public String deserialize(String inputString) {
+  public RespDataType deserialize(String inputString) {
     if (isNull(inputString)) {
-      return null;
+      return RespDataType.builder()
+        .value(null)
+        .dataType(dataTypeName)
+        .build();
     }
 
     validate(inputString);
-    return parsePayloadString(inputString);
+    return RespDataType.builder()
+      .value(parsePayloadString(inputString))
+      .dataType(dataTypeName)
+      .build();
   }
 
   private boolean isNull(String inputString) {
